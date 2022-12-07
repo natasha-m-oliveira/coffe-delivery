@@ -6,6 +6,7 @@ export type ButtonVariant = 'primary' | 'secondary' | 'neutral'
 interface ButtonContainerProps {
   variant: ButtonVariant
   fab: boolean
+  large: boolean
 }
 
 const buttonVariants = {
@@ -26,29 +27,16 @@ const buttonVariants = {
   },
 }
 
-export const ButtonBase = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-
-  padding: 0.5rem;
-  border: 0;
-
-  cursor: pointer;
-
-  font-weight: bold;
-
-  transition-property: color, background-color;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-`
+export const ButtonBase = styled.button.attrs((props) => ({
+  className: props.className || 'button',
+}))``
 
 export const ButtonContainer = styled(ButtonBase)<ButtonContainerProps>`
   ${(props) => {
     return css`
       background-color: ${buttonVariants[props.variant].bg};
       color: ${buttonVariants[props.variant].text};
+
       &:hover {
         background-color: ${buttonVariants[props.variant]['bg-hover']};
       }
@@ -56,7 +44,11 @@ export const ButtonContainer = styled(ButtonBase)<ButtonContainerProps>`
         box-shadow: 0 0 0 2px ${buttonVariants[props.variant]['bg-hover']};
       }
 
-      ${props.fab ? `border-radius: 50%;` : `border-radius: 6px;`}
+      ${props.fab && 'border-radius: 50% !important;'}
+      ${props.large && 'padding: 1rem !important;'}
+      ${props.large && 'gap: 0.75rem !important;'}
+      ${props.large && 'text-transform: uppercase;'}
+      ${props.large && 'width: 100%;'}
     `
   }}
 `

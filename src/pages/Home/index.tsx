@@ -57,11 +57,12 @@ export function Home() {
         <div className="list">
           <div className="list">
             <Card
+              variant="catalog"
               title="Expresso Tradicional"
               description="O tradicional café feito com água quente e grãos moídos"
               amount={9.9}
               image="espresso.png"
-              tags={['Tradicional']}
+              tags={['Tradicional', 'teste']}
             />
           </div>
         </div>

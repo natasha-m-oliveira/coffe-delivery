@@ -11,10 +11,13 @@ export const NumericInputContainer = styled.div`
 
   input {
     width: 20px;
+    height: 22px;
     text-align: center;
     background-color: transparent;
     border: 0;
     box-shadow: none;
+    font-size: 1rem;
+    line-height: 130%;
 
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;

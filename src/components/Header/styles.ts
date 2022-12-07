@@ -16,8 +16,6 @@ export const ActionsContainer = styled.div`
 `
 
 export const LocationContainer = styled(ButtonBase)`
-  border-radius: 6px;
-
   ${(props) => {
     return css`
       background-color: ${props.theme['purple-300']};
@@ -35,7 +33,6 @@ export const LocationContainer = styled(ButtonBase)`
 
 export const CartContainer = styled(ButtonBase)`
   position: relative;
-  border-radius: 6px;
 
   ${(props) => {
     return css`
