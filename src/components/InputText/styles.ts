@@ -6,6 +6,9 @@ export const InputTextContainer = styled.input`
   &:hover {
     box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-700']};
   }
+  &:focus {
+    box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-700']};
+  }
 
   font-size: 0.875rem;
 `

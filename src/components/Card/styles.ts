@@ -5,6 +5,8 @@ export const CardContainer = styled.div`
   background-color: ${(props) => props.theme['base-card']};
   border-radius: 6px 36px;
   padding: 1.25rem;
+
+  aspect-ratio: 1 / 1.2;
 `
 
 export const CardImage = styled.div`

@@ -1,19 +1,32 @@
 import { MapPin, ShoppingCart } from 'phosphor-react'
+import { Link } from 'react-router-dom'
 import { Logo } from '../../Logo'
-import { Button } from '../Button'
-import { ActionsContainer, HeaderContainer } from './styles'
+import {
+  ActionsContainer,
+  BadgeContainer,
+  CartContainer,
+  HeaderContainer,
+  LocationContainer,
+} from './styles'
 
 export function Header() {
+  const counter = 1
   return (
     <HeaderContainer>
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <ActionsContainer>
-        <Button variant="secondary">
+        <LocationContainer>
           <MapPin weight="fill" size={22} /> Porto Alegre, RS
-        </Button>
-        <Button>
-          <ShoppingCart weight="fill" size={22} />
-        </Button>
+        </LocationContainer>
+
+        <Link to="/checkout">
+          <CartContainer>
+            <ShoppingCart weight="fill" size={22} />
+            <BadgeContainer empty={!counter}>{counter}</BadgeContainer>
+          </CartContainer>
+        </Link>
       </ActionsContainer>
     </HeaderContainer>
   )
