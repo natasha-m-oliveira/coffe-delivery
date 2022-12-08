@@ -39,4 +39,10 @@ border-style, input-security, textarea, button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+
+@media (max-width: 768px) {
+  html {
+    font-size: 87.5%;
+  }
+}
 `

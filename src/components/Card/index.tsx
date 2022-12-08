@@ -54,8 +54,8 @@ export function Card(props: CardProps) {
               <h3>{props.title}</h3>
             </Title>
 
-            <Text size="xs" variant="secondary" align="center">
-              {props.description}
+            <Text size="xs" variant="secondary" align="center" asChild>
+              <p>{props.description}</p>
             </Text>
           </CardContent>
 
@@ -68,7 +68,7 @@ export function Card(props: CardProps) {
             </PriceContainer>
 
             <ActionsContainer>
-              <NumericInput min={0} max={5} />
+              <NumericInput />
               <Button variant="secondary">
                 <ShoppingCart weight="fill" size={22} />
               </Button>
@@ -87,7 +87,7 @@ export function Card(props: CardProps) {
             })}
           </Text>
           <ActionsContainer>
-            <NumericInput min={0} max={5} />
+            <NumericInput />
             <Button variant="neutral">
               <Trash size={16} />
               <Text size="xs">REMOVER</Text>

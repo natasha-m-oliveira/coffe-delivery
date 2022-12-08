@@ -13,8 +13,6 @@ export const CardContainer = styled.div<CardProps>`
         background-color: ${props.theme['base-card']};
         border-radius: 6px 36px;
         padding: 1.25rem;
-
-        aspect-ratio: 1 / 1.2;
       `
     return css`
       display: grid;
@@ -23,6 +21,11 @@ export const CardContainer = styled.div<CardProps>`
       gap: 1.25rem;
       background-color: ${props.theme['base-card']};
       padding: 0.25rem 0.5rem;
+
+      @media (max-width: 480px) {
+        display: flex;
+        flex-direction: column;
+      }
     `
   }}
 `
@@ -93,6 +96,12 @@ export const CardDetails = styled.div`
   grid-template-columns: 1fr 3.5rem;
   row-gap: 0.5rem;
   column-gap: 3.125rem;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 export const PriceContainer = styled.span`
@@ -113,7 +122,6 @@ export const PriceContainer = styled.span`
 
 export const ActionsContainer = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 0.5rem;
 `

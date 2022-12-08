@@ -3,11 +3,11 @@ import { useState } from 'react'
 import { ControllerContainer, NumericInputContainer } from './styles'
 
 interface NumericInputProps {
-  min: number
-  max: number
+  min?: number
+  max?: number
 }
 
-export function NumericInput({ min, max }: NumericInputProps) {
+export function NumericInput({ min = 1, max }: NumericInputProps) {
   const [amount, setAmount] = useState(min)
 
   function handleDecrement() {
@@ -18,7 +18,10 @@ export function NumericInput({ min, max }: NumericInputProps) {
 
   function handleIncrement() {
     setAmount((state) => {
-      return state < max ? ++state : max
+      if (max && state === max) {
+        return max
+      }
+      return ++state
     })
   }
 
