@@ -1,4 +1,6 @@
 import { ShoppingCart, Trash } from 'phosphor-react'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 import { Button } from '../Button'
 import { NumericInput } from '../NumericInput'
 import { Text } from '../Text'
@@ -15,8 +17,8 @@ import {
   PriceContainer,
 } from './styles'
 
-interface CatalogCardProperty {
-  variant: 'catalog'
+interface Coffee {
+  id: string
   title: string
   description: string
   amount: number
@@ -24,52 +26,79 @@ interface CatalogCardProperty {
   tags: string[]
 }
 
+interface CatalogCardProperty {
+  variant: 'catalog'
+  coffee: Coffee
+}
+
 interface CartCardProperty {
   variant: 'cart'
-  title: string
-  amount: number
-  image: string
+  coffee: Omit<Coffee, 'description' | 'tags'> & {
+    quantity: number
+  }
 }
 
 type CardProps = CatalogCardProperty | CartCardProperty
 
-export function Card(props: CardProps) {
-  const isForTheCatalog = props.variant === 'catalog'
+export function Card({ variant, coffee }: CardProps) {
+  const { addNewProduct, changeProductQuantityItems, removeProduct } =
+    useContext(CartContext)
+
+  const [quantityOfItems, setQuantityOfItems] = useState(1)
+
+  function handleAddToCart() {
+    addNewProduct({
+      id: coffee.id,
+      title: coffee.title,
+      image: coffee.image,
+      amount: coffee.amount,
+      quantity: quantityOfItems,
+    })
+  }
+
+  function handleRemoveToCart() {
+    removeProduct(coffee.id)
+  }
+
+  function handleChangeQuantity(quantity: number) {
+    changeProductQuantityItems(coffee.id, quantity)
+  }
+
   return (
-    <CardContainer variant={props.variant}>
-      <CardImage variant={props.variant}>
-        <img src={props.image} alt="" />
+    <CardContainer variant={variant}>
+      <CardImage variant={variant}>
+        <img src={coffee.image} alt="" />
       </CardImage>
 
-      {isForTheCatalog ? (
+      {variant === 'catalog' ? (
         <>
           <CardContent>
             <CardTagsWrapper>
-              {props.tags.map((tag) => (
+              {coffee.tags.map((tag) => (
                 <CardTag key={tag}>{tag}</CardTag>
               ))}
             </CardTagsWrapper>
 
             <Title size="sm" variant="secondary" asChild>
-              <h3>{props.title}</h3>
+              <h3>{coffee.title}</h3>
             </Title>
 
             <Text size="xs" variant="secondary" align="center" asChild>
-              <p>{props.description}</p>
+              <p>{coffee.description}</p>
             </Text>
           </CardContent>
 
           <BuyContainer>
             <PriceContainer>
-              {props.amount.toLocaleString('pt-BR', {
+              {coffee.amount.toLocaleString('pt-BR', {
                 style: 'decimal',
                 minimumFractionDigits: 2,
               })}
             </PriceContainer>
 
             <ActionsContainer>
-              <NumericInput />
-              <Button variant="secondary">
+              <NumericInput onChange={(value) => setQuantityOfItems(value)} />
+              <Button variant="secondary" onClick={handleAddToCart}>
                 <ShoppingCart weight="fill" size={22} />
               </Button>
             </ActionsContainer>
@@ -78,17 +107,20 @@ export function Card(props: CardProps) {
       ) : (
         <CardDetails>
           <Text size="md" variant="tertiary">
-            {props.title}
+            {coffee.title}
           </Text>
           <Text size="md" weight="bold" align="right">
-            {props.amount.toLocaleString('pt-BR', {
+            {coffee.amount.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
             })}
           </Text>
           <ActionsContainer>
-            <NumericInput />
-            <Button variant="neutral">
+            <NumericInput
+              onChange={handleChangeQuantity}
+              initialValue={coffee.quantity}
+            />
+            <Button variant="neutral" onClick={handleRemoveToCart}>
               <Trash size={16} />
               <Text size="xs">REMOVER</Text>
             </Button>

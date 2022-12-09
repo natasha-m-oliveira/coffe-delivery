@@ -28,6 +28,7 @@ export const CheckoutContainer = styled.main`
 
   > *:nth-child(4) {
     grid-area: purchaseOrder;
+    height: min-content;
   }
 
   @media (max-width: 950px) {

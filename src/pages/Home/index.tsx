@@ -57,7 +57,7 @@ export function Home() {
         </Title>
         <div className="list">
           {COFFEES.map((coffee) => (
-            <Card key={coffee.id} variant="catalog" {...coffee} />
+            <Card key={coffee.id} variant="catalog" coffee={coffee} />
           ))}
         </div>
       </CoffeeListContainer>

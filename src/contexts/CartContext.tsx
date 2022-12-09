@@ -1,24 +1,20 @@
-import { createContext, ReactNode, useReducer } from 'react'
+import { createContext, ReactNode, useEffect, useReducer } from 'react'
 import {
   addNewProductAction,
   changeProductQuantityItemsAction,
+  checkoutAction,
   removeProductAction,
 } from '../reducers/cart/actions'
 import { cartReducer, Purchase } from '../reducers/cart/reducer'
 
-interface CreatePurchaseData {
-  name: string
-  amount: number
-  quantity: number
-}
-
 interface CartContextType {
   purchases: Purchase[]
-  total: number
+  purchaseTotal: number
   freight: number
-  addNewProduct: (data: CreatePurchaseData) => void
+  addNewProduct: (data: Purchase) => void
   changeProductQuantityItems: (id: string, quantity: number) => void
   removeProduct: (id: string) => void
+  checkout: () => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -28,42 +24,64 @@ interface CartContextProviderProps {
 }
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cartState, dispatch] = useReducer(cartReducer, {
-    purchases: [],
-    total: 0,
-  })
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    {
+      purchases: [],
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@coffee-delivery:cart-state-1.0.0',
+      )
 
-  const { purchases, total } = cartState
-  const freight = 22.89
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+      return {
+        purchases: [],
+      }
+    },
+  )
+
+  const { purchases } = cartState
+  const totalInCents = purchases.reduce((accum, curr) => {
+    return accum + curr.amount * 100 * curr.quantity
+  }, 0)
+  const purchaseTotal = totalInCents / 100
+  const freight = purchaseTotal ? 22.89 : 0
 
   function changeProductQuantityItems(id: string, quantity: number) {
     dispatch(changeProductQuantityItemsAction(id, quantity))
   }
 
-  function addNewProduct(data: CreatePurchaseData) {
-    const id = String(new Date().getTime())
-    const newProduct: Purchase = {
-      id,
-      name: data.name,
-      amount: data.amount,
-      quantity: data.quantity,
-    }
-    dispatch(addNewProductAction(newProduct))
+  function addNewProduct(data: Purchase) {
+    dispatch(addNewProductAction(data))
   }
 
   function removeProduct(id: string) {
     dispatch(removeProductAction(id))
   }
 
+  function checkout() {
+    dispatch(checkoutAction())
+  }
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cartState)
+
+    localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON)
+  }, [cartState])
+
   return (
     <CartContext.Provider
       value={{
         purchases,
-        total,
+        purchaseTotal,
         freight,
         addNewProduct,
         changeProductQuantityItems,
         removeProduct,
+        checkout,
       }}
     >
       {children}

@@ -1,6 +1,8 @@
+import { useContext } from 'react'
 import { Button } from '../../../../components/Button'
 import { Card } from '../../../../components/Card'
 import { Text } from '../../../../components/Text'
+import { CartContext } from '../../../../contexts/CartContext'
 import {
   PurchaseOrderContainer,
   PurchasesWrapper,
@@ -8,45 +10,39 @@ import {
 } from './styles'
 
 export function PurchaseOrder() {
+  const { purchases, purchaseTotal, freight } = useContext(CartContext)
+
   return (
     <PurchaseOrderContainer>
       <PurchasesWrapper>
-        <Card
-          variant="cart"
-          title="Expresso Tradicional"
-          amount={9.9}
-          image="espresso.png"
-        />
-        <Card
-          variant="cart"
-          title="Expresso Tradicional"
-          amount={9.9}
-          image="espresso.png"
-        />
-        <Card
-          variant="cart"
-          title="Expresso Tradicional"
-          amount={9.9}
-          image="espresso.png"
-        />
-        <Card
-          variant="cart"
-          title="Expresso Tradicional"
-          amount={9.9}
-          image="espresso.png"
-        />
+        {purchases.map((purchase) => (
+          <Card key={purchase.id} variant="cart" coffee={purchase} />
+        ))}
       </PurchasesWrapper>
       <TotalPurchaseContainer>
         <Text size="sm">Total de itens</Text>
-        <Text size="sm">R$ 29,70</Text>
+        <Text size="sm">
+          {purchaseTotal.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </Text>
         <Text size="sm">Entrega</Text>
-        <Text size="sm">R$ 3,50</Text>
+        <Text size="sm">
+          {freight.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </Text>
 
         <Text size="lg" weight="bold">
           Total
         </Text>
         <Text size="lg" weight="bold">
-          R$ 33,20
+          {(purchaseTotal + freight).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
         </Text>
 
         <Button large>CONFIRMAR PEDIDO</Button>
