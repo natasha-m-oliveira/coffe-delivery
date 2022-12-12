@@ -45,7 +45,9 @@ export function PurchaseOrder() {
           })}
         </Text>
 
-        <Button large>CONFIRMAR PEDIDO</Button>
+        <Button type="submit" large>
+          CONFIRMAR PEDIDO
+        </Button>
       </TotalPurchaseContainer>
     </PurchaseOrderContainer>
   )

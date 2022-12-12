@@ -1,9 +1,37 @@
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
+import { useContext, useEffect, useRef } from 'react'
 import { Text } from '../../components/Text'
 import { Title } from '../../components/Title'
-import { OrderInfoContainer, SuccessContainer } from './styles'
+import { CartContext } from '../../contexts/CartContext'
+import {
+  ImageContainer,
+  ItemContainer,
+  OrderInfoContainer,
+  SuccessContainer,
+} from './styles'
+
+const methods = {
+  credit: 'Cartão de Crédito',
+  debit: 'Cartão de Débito',
+  cash: 'Dinheiro',
+}
 
 export function Success() {
+  const ignoreRef = useRef(false)
+  const { deliveryDetails, checkout } = useContext(CartContext)
+  const { street, number, district, city, state, paymentMethod } =
+    deliveryDetails
+
+  useEffect(() => {
+    return () => {
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        !ignoreRef.current ? (ignoreRef.current = true) : checkout()
+      } else {
+        checkout()
+      }
+    }
+  }, [checkout])
+
   return (
     <SuccessContainer>
       <div>
@@ -15,34 +43,47 @@ export function Success() {
         </Text>
 
         <OrderInfoContainer>
-          <div className="">
-            <span>
-              <MapPin size={32} />
+          <ItemContainer>
+            <span className="icon">
+              <MapPin size={16} weight="fill" />
             </span>
-            <Text>Entrega em Rua João Daniel Martinelli, 102</Text>
-            <Text>Farrapos - Porto Alegre, RS</Text>
-          </div>
+            <div>
+              <p className="location">
+                Entrega em{' '}
+                <span>
+                  {street}, {number}
+                </span>
+              </p>
+              <Text>
+                {district} - {city}, {state}
+              </Text>
+            </div>
+          </ItemContainer>
 
-          <div className="">
-            <span>
-              <Timer size={32} />
+          <ItemContainer>
+            <span className="icon">
+              <Timer size={16} weight="fill" />
             </span>
-            <Text>Previsão de entrega</Text>
-            <Text>20 min - 30 min</Text>
-          </div>
+            <div>
+              <Text>Previsão de entrega</Text>
+              <Text>20 min - 30 min</Text>
+            </div>
+          </ItemContainer>
 
-          <div className="">
-            <span>
-              <CurrencyDollar size={32} />
+          <ItemContainer>
+            <span className="icon">
+              <CurrencyDollar size={16} weight="fill" />
             </span>
-            <Text>Pagamento na entrega</Text>
-            <Text>Cartão de Crédito</Text>
-          </div>
+            <div>
+              <Text>Pagamento na entrega</Text>
+              <Text>{methods[paymentMethod]}</Text>
+            </div>
+          </ItemContainer>
         </OrderInfoContainer>
       </div>
-      <div className="">
+      <ImageContainer>
         <img src="illustration.svg" alt="Ilustração de Entregador" />
-      </div>
+      </ImageContainer>
     </SuccessContainer>
   )
 }

@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useEffect, useReducer } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import {
   addNewProductAction,
   changeProductQuantityItemsAction,
@@ -7,10 +13,25 @@ import {
 } from '../reducers/cart/actions'
 import { cartReducer, Purchase } from '../reducers/cart/reducer'
 
+type PaymentMethod = 'debit' | 'credit' | 'cash'
+
+export interface DeliveryDetails {
+  zip: string
+  street: string
+  number: string
+  complement?: string
+  district: string
+  city: string
+  state: string
+  paymentMethod: PaymentMethod
+}
+
 interface CartContextType {
   purchases: Purchase[]
   purchaseTotal: number
   freight: number
+  deliveryDetails: DeliveryDetails
+  addDeliveryDetails: (data: DeliveryDetails) => void
   addNewProduct: (data: Purchase) => void
   changeProductQuantityItems: (id: string, quantity: number) => void
   removeProduct: (id: string) => void
@@ -24,6 +45,9 @@ interface CartContextProviderProps {
 }
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
+  const [deliveryDetails, setDeliveryDetails] = useState<DeliveryDetails>(
+    {} as DeliveryDetails,
+  )
   const [cartState, dispatch] = useReducer(
     cartReducer,
     {
@@ -63,7 +87,12 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   }
 
   function checkout() {
+    setDeliveryDetails({} as DeliveryDetails)
     dispatch(checkoutAction())
+  }
+
+  function addDeliveryDetails(data: DeliveryDetails) {
+    setDeliveryDetails(data)
   }
 
   useEffect(() => {
@@ -78,6 +107,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         purchases,
         purchaseTotal,
         freight,
+        deliveryDetails,
+        addDeliveryDetails,
         addNewProduct,
         changeProductQuantityItems,
         removeProduct,

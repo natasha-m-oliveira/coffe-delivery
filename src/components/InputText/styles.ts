@@ -1,6 +1,11 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const InputTextContainer = styled.div`
+interface InputTextProps {
+  error?: string
+  required?: boolean
+}
+
+export const InputTextContainer = styled.div<InputTextProps>`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -19,21 +24,34 @@ export const InputTextContainer = styled.div`
       color: ${(props) => props.theme['base-label']};
     }
   }
-  &:focus,
   &:hover {
     box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-700']};
   }
-  &:focus {
+  &:has(input:focus) {
     box-shadow: 0 0 0 2px ${(props) => props.theme['yellow-700']};
   }
-  &:has(input:not(:required)) {
-    &::after {
-      content: 'Optional';
-      font-family: 'Roboto', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 400;
-      font-style: italic;
-      line-height: 130%;
+  ${(props) => {
+    if (!props.required) {
+      return css`
+        &::after {
+          content: 'Optional';
+          font-family: 'Roboto', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 400;
+          font-style: italic;
+          line-height: 130%;
+        }
+      `
     }
-  }
+  }}
+
+  ${(props) => {
+    if (props.error) {
+      return css`
+        &:has(input:not(:focus)) {
+          box-shadow: 0 0 0 2px ${(props) => props.theme['red-500']};
+        }
+      `
+    }
+  }}
 `

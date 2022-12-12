@@ -24,12 +24,9 @@ export const PaymentContainer = styled(StepBase)`
         return css`
           background-color: ${props.theme['base-button']};
           color: ${props.theme['purple-500']};
-          &[data-state='checked'],
-          &:focus {
-            box-shadow: 0 0 0 2px ${props.theme['purple-500']};
-          }
           &[data-state='checked'] {
             background-color: ${props.theme['purple-300']};
+            box-shadow: 0 0 0 2px ${props.theme['purple-500']};
           }
           &:hover:not([data-state='checked']) {
             background-color: ${props.theme['base-hover']};
@@ -40,6 +37,12 @@ export const PaymentContainer = styled(StepBase)`
 
     @media (max-width: 680px) {
       flex-direction: column;
+    }
+  }
+
+  .invalid {
+    .button {
+      box-shadow: 0 0 0 2px ${(props) => props.theme['red-500']};
     }
   }
 `

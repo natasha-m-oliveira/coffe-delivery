@@ -1,31 +1,42 @@
 import axios from 'axios'
 import { MapPinLine } from 'phosphor-react'
-import { FocusEvent, useState } from 'react'
+import { FocusEvent } from 'react'
+import { useFormContext } from 'react-hook-form'
 import { InputText } from '../../../../components/InputText'
 import { Text } from '../../../../components/Text'
-import { ShippingAddress } from '../../../../reducers/cart/reducer'
 import { AddressContainer } from './styles'
 
 export function Address() {
-  const [address, setAddress] = useState<ShippingAddress>({} as ShippingAddress)
+  const {
+    register,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useFormContext()
 
   async function handleFindAddress({ target }: FocusEvent<HTMLInputElement>) {
-    const validBRZip = /^[0-9]{5}-?[0-9]{3}$/
+    try {
+      const validBRZip = /^[0-9]{5}-?[0-9]{3}$/
 
-    if (!target.value.match(validBRZip)) return
+      if (!target.value.match(validBRZip)) {
+        return setError('zip', { type: 'custom', message: 'CEP inválido' })
+      }
 
-    // const response = await axios(
-    //   `https://viacep.com.br/ws/${target.value}/json/`,
-    // )
-    // const { cep, logradouro, bairro, localidade, uf } = response.data
-    // setAddress({
-    //   zip: cep,
-    //   street: logradouro,
-    //   district: bairro,
-    //   city: localidade,
-    //   state: uf,
-    // })
+      const response = await axios(
+        `https://viacep.com.br/ws/${target.value}/json/`,
+      )
+
+      const { logradouro, bairro, localidade, uf } = response.data
+
+      setValue('street', logradouro)
+      setValue('district', bairro)
+      setValue('city', localidade)
+      setValue('state', uf)
+    } catch (error) {
+      setError('zip', { type: 'custom', message: 'CEP inválido' })
+    }
   }
+
   return (
     <AddressContainer>
       <div className="header">
@@ -41,32 +52,60 @@ export function Address() {
       </div>
 
       <div className="content">
-        <InputText placeholder="CEP" required onBlur={handleFindAddress} />
         <InputText
+          {...register('zip', {
+            required: true,
+            pattern: /^[0-9]{5}-?[0-9]{3}$/,
+          })}
+          required
+          placeholder="CEP"
+          onBlur={handleFindAddress}
+          error={errors.zip?.type as string}
+        />
+        <InputText
+          {...register('street', {
+            required: true,
+          })}
+          required
           placeholder="Rua"
-          required
-          value={address.street || ''}
           readOnly
+          error={errors.zip?.type as string}
         />
-        <InputText placeholder="Número" required />
-        <InputText placeholder="Complemento" />
         <InputText
+          {...register('number', {
+            required: true,
+          })}
+          required
+          placeholder="Número"
+          error={errors.zip?.type as string}
+        />
+        <InputText {...register('complement')} placeholder="Complemento" />
+        <InputText
+          {...register('district', {
+            required: true,
+          })}
+          required
           placeholder="Bairro"
-          required
-          value={address.district || ''}
           readOnly
+          error={errors.zip?.type as string}
         />
         <InputText
+          {...register('city', {
+            required: true,
+          })}
+          required
           placeholder="Cidade"
-          required
-          value={address.city || ''}
           readOnly
+          error={errors.zip?.type as string}
         />
         <InputText
-          placeholder="UF"
+          {...register('state', {
+            required: true,
+          })}
           required
-          value={address.state || ''}
+          placeholder="UF"
           readOnly
+          error={errors.zip?.type as string}
         />
       </div>
     </AddressContainer>

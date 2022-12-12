@@ -12,7 +12,7 @@ import {
 } from './styles'
 
 export function Header() {
-  const { purchases } = useContext(CartContext)
+  const { purchases, deliveryDetails } = useContext(CartContext)
 
   return (
     <HeaderContainer>
@@ -27,7 +27,9 @@ export function Header() {
         <Link to="/checkout">
           <CartContainer>
             <ShoppingCart weight="fill" size={22} />
-            <BadgeContainer empty={!purchases.length}>
+            <BadgeContainer
+              empty={!purchases.length || !!Object.keys(deliveryDetails).length}
+            >
               {purchases.length}
             </BadgeContainer>
           </CartContainer>

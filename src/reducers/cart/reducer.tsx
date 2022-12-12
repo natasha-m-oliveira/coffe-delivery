@@ -9,20 +9,8 @@ export interface Purchase {
   quantity: number
 }
 
-export interface ShippingAddress {
-  zip: string
-  street: string
-  district: string
-  number: string
-  complement?: string
-  city: string
-  state: string
-}
-
 interface CartState {
   purchases: Purchase[]
-  // shippingAddress: ShippingAddress
-  // paymentMethod: string
 }
 
 export function cartReducer(state: CartState, action: ActionTypesProps) {
