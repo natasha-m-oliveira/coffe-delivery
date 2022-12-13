@@ -6,9 +6,11 @@ export const GlobalStyled = createGlobalStyle`
   padding: 0;
   box-sizing: border-box;
 }
+
 :focus {
   outline: 0;
 }
+
 body{
   background: ${(props) => props.theme.background};
   color: ${(props) => props.theme['base-text']};
@@ -19,6 +21,14 @@ border-style, input-security, textarea, button {
   font-weight: 400;
   font-size: 1rem;
   line-height: 130%;
+}
+
+#root {
+  min-height: 100vh;
+  max-width: 74rem;
+  background: ${(props) => props.theme.background};
+  margin: 0 auto;
+  padding: 1rem;
 }
 
 .button {

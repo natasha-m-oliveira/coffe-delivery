@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useRef } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Title } from '../../components/Title'
 import { CartContext, DeliveryDetails } from '../../contexts/CartContext'
@@ -11,12 +11,12 @@ import { CheckoutContainer } from './styles'
 
 export function Checkout() {
   const methods = useForm<DeliveryDetails>({ shouldUseNativeValidation: false })
+  const success = useRef(false)
 
   const { handleSubmit } = methods
-  const { purchases, deliveryDetails, addDeliveryDetails } =
-    useContext(CartContext)
+  const { purchases, addDeliveryDetails } = useContext(CartContext)
 
-  if (Object.keys(deliveryDetails).length) {
+  if (success.current) {
     return <Success />
   }
 
@@ -26,6 +26,7 @@ export function Checkout() {
 
   function onSubmit(data: DeliveryDetails) {
     addDeliveryDetails(data)
+    success.current = true
   }
 
   return (

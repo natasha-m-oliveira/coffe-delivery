@@ -1,52 +1,44 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
-interface CardProps {
-  variant: 'catalog' | 'cart'
-}
+export const CardContainer = styled.div`
+  background-color: ${(props) => props.theme['base-card']};
 
-export const CardContainer = styled.div<CardProps>`
-  ${(props) => {
-    if (props.variant === 'catalog')
-      return css`
-        position: relative;
+  &.catalog {
+    position: relative;
 
-        background-color: ${props.theme['base-card']};
-        border-radius: 6px 36px;
-        padding: 1.25rem;
-      `
-    return css`
-      display: grid;
-      grid-template-columns: 4rem 1fr;
-      align-items: center;
-      gap: 1.25rem;
-      background-color: ${props.theme['base-card']};
-      padding: 0.25rem 0.5rem;
+    border-radius: 6px 36px;
+    padding: 1.25rem;
+  }
 
-      @media (max-width: 480px) {
-        display: flex;
-        flex-direction: column;
-      }
-    `
-  }}
+  &.cart {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.25rem 0.5rem;
+
+    @media (max-width: 480px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 `
 
-export const CardImage = styled.div<CardProps>`
+export const CardImage = styled.div`
   img {
     display: block;
     max-width: 100%;
     margin: 0 auto;
   }
-  ${(props) => {
-    if (props.variant === 'catalog')
-      return css`
-        position: absolute;
-        width: 7.5rem;
-        top: -1.25rem;
-        left: 0;
-        right: 0;
-        margin: 0 auto;
-      `
-  }}
+
+  &.catalog {
+    position: absolute;
+    width: 7.5rem;
+    top: -1.25rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 `
 
 export const CardContent = styled.div`

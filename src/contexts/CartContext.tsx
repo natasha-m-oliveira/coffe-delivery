@@ -48,6 +48,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
   const [deliveryDetails, setDeliveryDetails] = useState<DeliveryDetails>(
     {} as DeliveryDetails,
   )
+
   const [cartState, dispatch] = useReducer(
     cartReducer,
     {

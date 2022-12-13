@@ -1,19 +1,20 @@
 import { Minus, Plus } from 'phosphor-react'
-import { useEffect, useState } from 'react'
+import { InputHTMLAttributes, useEffect, useState } from 'react'
 import { ControllerContainer, NumericInputContainer } from './styles'
 
-interface NumericInputProps {
+interface NumericInputProps extends InputHTMLAttributes<HTMLInputElement> {
   min?: number
   max?: number
   initialValue?: number
-  onChange?: (value: number) => void
+  onValueChange?: (value: number) => void
 }
 
 export function NumericInput({
   min = 1,
   max,
   initialValue,
-  onChange,
+  onValueChange,
+  ...rest
 }: NumericInputProps) {
   const [amount, setAmount] = useState(initialValue || min)
 
@@ -33,16 +34,23 @@ export function NumericInput({
   }
 
   useEffect(() => {
-    onChange && onChange(amount)
-  }, [amount, onChange])
+    onValueChange && onValueChange(amount)
+  }, [amount, onValueChange])
 
   return (
     <NumericInputContainer>
-      <ControllerContainer onClick={handleDecrement}>
+      <ControllerContainer type="button" onClick={handleDecrement}>
         <Minus weight="bold" size={14} />
       </ControllerContainer>
-      <input type="number" max={max} min={min} value={amount} readOnly />
-      <ControllerContainer onClick={handleIncrement}>
+      <input
+        type="number"
+        max={max}
+        min={min}
+        value={amount}
+        readOnly
+        {...rest}
+      />
+      <ControllerContainer type="button" onClick={handleIncrement}>
         <Plus weight="bold" size={14} />
       </ControllerContainer>
     </NumericInputContainer>

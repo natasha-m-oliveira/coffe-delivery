@@ -65,8 +65,8 @@ export function Card({ variant, coffee }: CardProps) {
   }
 
   return (
-    <CardContainer variant={variant}>
-      <CardImage variant={variant}>
+    <CardContainer className={variant}>
+      <CardImage className={variant}>
         <img src={coffee.image} alt="" />
       </CardImage>
 
@@ -97,7 +97,7 @@ export function Card({ variant, coffee }: CardProps) {
             </PriceContainer>
 
             <ActionsContainer>
-              <NumericInput onChange={(value) => setQuantityOfItems(value)} />
+              <NumericInput onValueChange={setQuantityOfItems} />
               <Button variant="secondary" onClick={handleAddToCart}>
                 <ShoppingCart weight="fill" size={22} />
               </Button>
@@ -117,7 +117,7 @@ export function Card({ variant, coffee }: CardProps) {
           </Text>
           <ActionsContainer>
             <NumericInput
-              onChange={handleChangeQuantity}
+              onValueChange={handleChangeQuantity}
               initialValue={coffee.quantity}
             />
             <Button variant="neutral" onClick={handleRemoveToCart}>
