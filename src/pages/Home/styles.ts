@@ -19,6 +19,12 @@ export const IntroContainer = styled.div`
     flex-direction: column;
     gap: 4.5rem;
     flex: 1;
+
+    @media (max-width: 425px) {
+      h1 {
+        font-size: 2rem;
+      }
+    }
   }
 
   .items {

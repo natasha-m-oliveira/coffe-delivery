@@ -2,6 +2,7 @@ import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 import { Card } from '../../components/Card'
 import { Text } from '../../components/Text'
 import { Title } from '../../components/Title'
+import { COFFEES } from '../../utils/coffees'
 import { Item } from './components/Item'
 import { CoffeeListContainer, HomeContainer, IntroContainer } from './styles'
 
@@ -55,15 +56,9 @@ export function Home() {
           Nossos Cafés
         </Title>
         <div className="list">
-          <div className="list">
-            <Card
-              title="Expresso Tradicional"
-              description="O tradicional café feito com água quente e grãos moídos"
-              amount={9.9}
-              image="espresso.png"
-              tags={['Tradicional']}
-            />
-          </div>
+          {COFFEES.map((coffee) => (
+            <Card key={coffee.id} variant="catalog" coffee={coffee} />
+          ))}
         </div>
       </CoffeeListContainer>
     </HomeContainer>

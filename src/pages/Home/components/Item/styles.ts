@@ -27,7 +27,7 @@ export const ItemContainer = styled.div`
 `
 
 export const IconContainer = styled(ButtonBase)`
-  border-radius: 50%;
+  border-radius: 50% !important;
   cursor: unset;
   color: ${(props) => props.theme.background};
 `

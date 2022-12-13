@@ -1,5 +1,7 @@
 import { MapPin, ShoppingCart } from 'phosphor-react'
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { CartContext } from '../../contexts/CartContext'
 import { Logo } from '../../Logo'
 import {
   ActionsContainer,
@@ -10,7 +12,8 @@ import {
 } from './styles'
 
 export function Header() {
-  const counter = 1
+  const { purchases, deliveryDetails } = useContext(CartContext)
+
   return (
     <HeaderContainer>
       <Link to="/">
@@ -24,7 +27,11 @@ export function Header() {
         <Link to="/checkout">
           <CartContainer>
             <ShoppingCart weight="fill" size={22} />
-            <BadgeContainer empty={!counter}>{counter}</BadgeContainer>
+            <BadgeContainer
+              empty={!purchases.length || !!Object.keys(deliveryDetails).length}
+            >
+              {purchases.length}
+            </BadgeContainer>
           </CartContainer>
         </Link>
       </ActionsContainer>
